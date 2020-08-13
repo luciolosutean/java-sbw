@@ -34,4 +34,32 @@ public class BookService {
         Book book = bookMapper.bookDtoToBook(bookDto);
         return Optional.of(bookRepository.saveAndFlush(book).getId());
     }
+
+    public Optional<BookDto> updateBook(int id, BookDto updatedBookDto) {
+        Optional<Book> existingBookOptional = bookRepository.findById(id);
+
+        if (existingBookOptional.isEmpty()) {
+            return Optional.empty();
+        }
+
+        Book existingBook = existingBookOptional.get();
+        existingBook.setTitle(updatedBookDto.getTitle());
+        existingBook.setAuthor(updatedBookDto.getAuthor());
+        existingBook.setDescription(updatedBookDto.getDescription());
+
+        Book updatedBook = bookRepository.save(existingBook);
+
+        return Optional.of(bookMapper.bookToBookDto(updatedBook));
+    }
+
+    public Optional<Integer> deleteBook(int id) {
+        Optional<Book> existingBookOptional = bookRepository.findById(id);
+        if (existingBookOptional.isEmpty()) {
+            return Optional.empty();
+        }
+
+        bookRepository.delete(existingBookOptional.get());
+
+        return Optional.of(id);
+    }
 }
