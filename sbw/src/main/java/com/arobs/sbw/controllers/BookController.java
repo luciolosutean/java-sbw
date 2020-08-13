@@ -6,12 +6,19 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @AllArgsConstructor
 @RestController
 @RequestMapping(value = "/book")
 public class BookController {
 
     private final BookService bookService;
+
+    @RequestMapping(value = "/all", method = RequestMethod.GET)
+    public ResponseEntity<List<BookDto>> getAllBooks() {
+        return ResponseEntity.of(bookService.findAllBooks());
+    }
 
     @RequestMapping(value = "/byTitle", method = RequestMethod.GET)
     public ResponseEntity<BookDto> getBookByTitle(@RequestParam("title") String title) {

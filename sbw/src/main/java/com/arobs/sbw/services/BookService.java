@@ -6,7 +6,9 @@ import com.arobs.sbw.model.Book;
 import com.arobs.sbw.repositories.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -19,6 +21,15 @@ public class BookService {
     public BookService(BookRepository bookRepository, BookMapper bookMapper) {
         this.bookRepository = bookRepository;
         this.bookMapper = bookMapper;
+    }
+
+    public Optional<List<BookDto>> findAllBooks() {
+        List<Book> allBooks = bookRepository.findAll();
+        if (CollectionUtils.isEmpty(allBooks)) {
+            return Optional.empty();
+        }
+
+        return Optional.of(bookMapper.booksToBookDtos(allBooks));
     }
 
     public Optional<BookDto> findBookForTitle(String title) {
