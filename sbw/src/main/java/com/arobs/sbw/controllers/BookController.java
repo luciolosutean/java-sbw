@@ -20,6 +20,11 @@ public class BookController {
         return ResponseEntity.of(bookService.findAllBooks());
     }
 
+    @RequestMapping(value = "/byId", method = RequestMethod.GET)
+    public ResponseEntity<BookDto> getBookById(@RequestParam("id") Integer id) {
+        return ResponseEntity.of(bookService.findBookForId(id));
+    }
+
     @RequestMapping(value = "/byTitle", method = RequestMethod.GET)
     public ResponseEntity<BookDto> getBookByTitle(@RequestParam("title") String title) {
         return ResponseEntity.of(bookService.findBookForTitle(title));

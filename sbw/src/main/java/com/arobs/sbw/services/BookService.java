@@ -32,6 +32,11 @@ public class BookService {
         return Optional.of(bookMapper.booksToBookDtos(allBooks));
     }
 
+    public Optional<BookDto> findBookForId(Integer id) {
+        Optional<Book> bookOptional = bookRepository.findById(id);
+        return bookOptional.map(bookMapper::bookToBookDto);
+    }
+
     public Optional<BookDto> findBookForTitle(String title) {
         Optional<Book> bookOptional = bookRepository.findByTitle(title);
         return bookOptional.map(bookMapper::bookToBookDto);
